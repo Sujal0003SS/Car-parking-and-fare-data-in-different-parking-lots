@@ -3,22 +3,22 @@ library(ggplot2)
 library(tidyr)
 library(dplyr)
 
-# Sample dataset: Car parking and fare data in different parking lots
-parking_data <- data.frame(
-  Parking_Lot = c("Lot A", "Lot B", "Lot C", "Lot D", "Lot E"),
-  Total_Spots = c(120, 150, 100, 130, 110),
-  Occupied_Spots = c(95, 110, 85, 100, 90),
-  Hourly_Fare = c(5.0, 6.5, 4.0, 5.5, 4.5),
-  Daily_Revenue = c(750, 980, 620, 890, 710)
+# Sample dataset: Hospital patient metrics
+patient_data <- data.frame(
+  Patient = c("Alice", "Bob", "Charlie", "Diana", "Ethan"),
+  Age = c(29, 45, 37, 52, 41),
+  Blood_Pressure = c(120, 140, 130, 150, 135),
+  Heart_Rate = c(72, 85, 78, 90, 76),
+  Cholesterol = c(180, 220, 200, 240, 210)
 )
 
-# Display parking data
-display_parking <- function(data) {
-  print("Car Parking and Fare Data:")
+# Display patient data
+display_patients <- function(data) {
+  print("Patient Medical Records:")
   print(data)
 }
 
-display_parking(parking_data)
+display_patients(patient_data)
 
 # Basic Statistical Analysis
 calculate_statistics <- function(data) {
@@ -31,11 +31,11 @@ calculate_statistics <- function(data) {
   return(stats)
 }
 
-stats <- calculate_statistics(parking_data)
+stats <- calculate_statistics(patient_data)
 print("Summary Statistics:")
 print(stats)
 
-# Display summary statistics as a table
+# Summary Table
 summary_table <- function(stats) {
   print("Summary Statistics Table:")
   print(stats)
@@ -43,49 +43,49 @@ summary_table <- function(stats) {
 
 summary_table(stats)
 
-# Visualization: Bar Plot for Parking Metrics
+# Bar Plot for Patient Metrics
 bar_plot <- function(data) {
-  melted_data <- pivot_longer(data, cols = -Parking_Lot, names_to = "Metric", values_to = "Value")
-  ggplot(melted_data, aes(x = Parking_Lot, y = Value, fill = Metric)) +
+  melted_data <- pivot_longer(data, cols = -Patient, names_to = "Metric", values_to = "Value")
+  ggplot(melted_data, aes(x = Patient, y = Value, fill = Metric)) +
     geom_bar(stat = "identity", position = "dodge") +
-    labs(title = "Parking Lot Metrics", x = "Parking Lot", y = "Value", fill = "Metric") +
+    labs(title = "Patient Medical Metrics", x = "Patient", y = "Value", fill = "Metric") +
     theme_minimal()
 }
 
-bar_plot(parking_data)
+bar_plot(patient_data)
 
-# Visualization: Box Plot for Parking Metrics
+# Box Plot
 box_plot <- function(data) {
-  melted_data <- pivot_longer(data, cols = -Parking_Lot, names_to = "Metric", values_to = "Value")
+  melted_data <- pivot_longer(data, cols = -Patient, names_to = "Metric", values_to = "Value")
   ggplot(melted_data, aes(x = Metric, y = Value, fill = Metric)) +
     geom_boxplot() +
-    labs(title = "Distribution of Parking Metrics", x = "Metric", y = "Value") +
+    labs(title = "Distribution of Patient Metrics", x = "Metric", y = "Value") +
     theme_minimal()
 }
 
-box_plot(parking_data)
+box_plot(patient_data)
 
-# Visualization: Histogram of Parking Metrics
+# Histogram
 histogram_plot <- function(data) {
-  melted_data <- pivot_longer(data, cols = -Parking_Lot, names_to = "Metric", values_to = "Value")
+  melted_data <- pivot_longer(data, cols = -Patient, names_to = "Metric", values_to = "Value")
   ggplot(melted_data, aes(x = Value, fill = Metric)) +
-    geom_histogram(binwidth = 20, alpha = 0.7, position = "dodge", color = "black") +
-    labs(title = "Histogram of Parking Metrics", x = "Value", y = "Frequency", fill = "Metric") +
+    geom_histogram(binwidth = 10, alpha = 0.6, position = "identity", color = "black") +
+    labs(title = "Histogram of Patient Metrics", x = "Value", y = "Frequency", fill = "Metric") +
     theme_minimal()
 }
 
-histogram_plot(parking_data)
+histogram_plot(patient_data)
 
-# Identify Parking Lots with Max and Min Metrics
+# Identify Extremes
 identify_extremes <- function(data) {
   results <- lapply(names(data)[-1], function(metric) {
-    highest <- data[which.max(data[[metric]]), "Parking_Lot"]
-    lowest <- data[which.min(data[[metric]]), "Parking_Lot"]
+    highest <- data[which.max(data[[metric]]), "Patient"]
+    lowest <- data[which.min(data[[metric]]), "Patient"]
     return(data.frame(Metric = metric, Highest = highest, Lowest = lowest))
   })
   return(do.call(rbind, results))
 }
 
-extremes <- identify_extremes(parking_data)
+extremes <- identify_extremes(patient_data)
 print("Highest and Lowest Values by Metric:")
 print(extremes)
